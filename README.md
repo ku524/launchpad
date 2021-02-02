@@ -102,3 +102,10 @@ Go to build your spaceONE using launchpad !
 </pre>
 
 
+#### 5. Continue installing with ansible
+
+To install spaceone main database(mongodb)
+
+Move to ansible directory 
+
+[Mongodb Ansible Installation](https://https://github.com/spaceone-dev/launchpad/tree/master/spaceone/mongodb/ansible/README.md)
