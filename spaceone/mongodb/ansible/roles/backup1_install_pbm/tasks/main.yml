@@ -19,7 +19,7 @@
   ansible.builtin.lineinfile:
     path: /etc/default/pbm-agent
     regexp: '^PBM_MONGODB_URI='
-    line: PBM_MONGODB_URI="mongodb://pbmuser:{{ pbmuser_password }}@localhost:{{ mongod_port }}"
+    line: PBM_MONGODB_URI="mongodb://pbmuser:{{ pbmuser_password }}@localhost:{{ shard_port }}"
     create: yes
 - 
   name: configure permanent environment variable

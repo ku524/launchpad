@@ -1,7 +1,7 @@
 -
   name: configure balancer window
   community.mongodb.mongodb_balancer:
-    login_port: "{{ mongod_port }}"
+    login_port: "{{ shard_port }}"
     login_user: "{{ shard_admin_user }}"
     login_password: "{{ shard_admin_password }}"
     autosplit: yes
@@ -46,4 +46,4 @@
     name: pbm delete stale backup
     minute: 0
     hour: 0
-    job: "pbm delete-backup --older-than=$(date -d '{{ stale_criteria|int }} day ago' +%Y-%m-%d)"
+    job: "pbm delete-backup --older-than=$(date -d '{{ backup_lifecycle|int }} day ago' +%Y-%m-%d)"

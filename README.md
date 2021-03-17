@@ -10,8 +10,10 @@ SpaceONE infrastructure automation provisioning code
 
 ## Architecture
  
+### MongoDB
 ![MongoDB](./mongodb_arch_img.jpg)
-
+### Backup
+![MongoDB_backup](./mongodb_backup_arch.png)
 
 ## Terraform
 
@@ -141,19 +143,44 @@ Go to build your spaceONE using launchpad !
 * data_node_replicaset
 * shard_cluster
 * bastion
+* backup1_install_pbm
+* backup2_db_backup_role
+* backup3_shardwide_setting
+* backup4_start_agent
 
 ### How to use
 
 #### 1. Access Bastion Instance
 
-#### 2. Access Test for 
+#### 2. Access Test (dynamic inventory)
 
 We will use Ansible dynamic inventory. 
-Configure for using Ansible dynamic inventory automatically. You don't need to anything to configure for it.
+Configuration for using Ansible dynamic inventory is already filled except one thing - region.
+
+`spaceone/ansible/inventory/aws_ec2.yml`
+```yaml
+# aws_ec2.yml
+plugin: aws_ec2
+
+regions:
+  - us-west-1 # region where mongodb place
+...
+```
 Please check do `ansible-inventory` command.
 
 ```sh
 > ansible-inventory --graph -i inventory/
+```
+
+The result should look like this
+```
+@all:
+  |--@aws_ec2:
+  |  |--mongodb-bastion
+  |  |--mongodb-cfg1
+  |  |--mongodb-cfg2
+  |  |--mongodb-cfg3
+...
 ```
 
 #### 3. Fill out Variables in group variable file - mongodb.yml
@@ -170,4 +197,22 @@ It's simple! Run playbook now.
 
 ```sh
 > ansible-playbook -i inventory/ mongodb.yml
+```
+
+#### 5. (Optional) Backup - Run playbook!
+
+backup roles use the same variable file with `mongodb.yml`, fill out backup configuration part!
+`spaceone/ansible/inventory/group_vars/mongodb.yml`
+```yaml
+# Backup Configuration
+backup_or_not: # True | False
+
+region_of_S3: "" # <region of backup bucket>
+bucket_name: "" # <backup bucket name>
+...
+```
+
+Run playbook!
+```sh
+> ansible-playbook -i inventory/ backup.yml
 ```

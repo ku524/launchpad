@@ -8,8 +8,6 @@ filters:
     - mongodb
     - mongodb-bastion
 
-# Ignores 403 errors rather than failing
-strict_permissions: False
 hostnames:
   - tag:Name
 keyed_groups:

@@ -1,7 +1,7 @@
 -
   name: check primary
   community.mongodb.mongodb_shell:
-    login_port: "{{ mongod_port }}"
+    login_port: "{{ shard_port }}"
     login_user: "{{ admin_user }}"
     login_password: "{{ admin_password }}"
     db: admin
@@ -14,7 +14,7 @@
   when: "'\"ismaster\" : true' in primary_check.transformed_output"
   ignore_errors: true
   community.mongodb.mongodb_shell:
-    login_port: "{{ mongod_port }}"
+    login_port: "{{ shard_port }}"
     login_user: "{{ admin_user }}"
     login_password: "{{ admin_password }}"
     db: admin
@@ -38,7 +38,7 @@
   name: add a user for pbm - pbmuser
   when: "'\"ismaster\" : true' in primary_check.transformed_output"
   community.mongodb.mongodb_user:
-    login_port: "{{ mongod_port }}"
+    login_port: "{{ shard_port }}"
     login_user: "{{ admin_user }}"
     login_password: "{{ admin_password }}"
     database: admin

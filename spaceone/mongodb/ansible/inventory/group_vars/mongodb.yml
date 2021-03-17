@@ -1,18 +1,19 @@
 # Global Configuration
-ansible_port: <ssh port of mongoDB machine>
+ansible_port: 22 # <ssh port of mongoDB machine>
 ansible_ssh_user: ubuntu
 ansible_python_interpreter: <python path>
 ansible_ssh_private_key_file: <pem file path>
 
-#install mongodb variable
+# Common MongoDB configuration
 admin_user: ""
 admin_password: ""
 shard_admin_user: ""
 shard_admin_password: ""
 
+# Install MongoDB configuration
 # Every host should be written in (IP(DNS):Port) format
 config_members:
-  - host: ""          # mongodb-cfg1 (Format : IP(DNS):Port)
+  - host: ""          # mongodb-cfg1
     priority: 1
   - host: ""          # mongodb-cfg2
     priority: 0.5
@@ -51,7 +52,8 @@ replica_info:
         priority: 0
     arbiter_index: 2
 
-databases: # the list of databases to be sharded
+# the list of databases to be sharded
+databases: 
   - identity
   - inventory
   - billing
@@ -64,19 +66,18 @@ databases: # the list of databases to be sharded
   - secret
   - statistics
 
-#backup variable
+# Backup Configuration
 backup_or_not: # True | False
 
-region_of_S3: <region of backup bucket>
-bucket_name: <backup bucket name>
+region_of_S3: "" # <region of backup bucket>
+bucket_name: "" # <backup bucket name>
 
-access_key_S3: <your-access-key-id-here>
-secret_access_key_S3: <your-secret-key-here>
+# role for this key : https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_policies_examples_s3_rw-bucket.html
+access_key_S3: "" #<your-access-key-id-here>
+secret_access_key_S3: "" #<your-secret-key-here>
 
-mongod_port: <mongoDB port>
-pbmuser_password: <pbmuser password to create>
-mongo_config_replset_name: <name of config server replica set>
+pbmuser_password: "" # <pbmuser password to create>
 
-MONGODB_CONFIG_SERVER_URI: "{{ config_members | map(attribute='host') | join(',') }}/?replicaSet={{ mongo_config_replset_name }}" # no need to edit
+MONGODB_CONFIG_SERVER_URI: "{{ config_members | map(attribute='host') | join(',') }}/?replicaSet=rs-cfg" # no need to edit
 
-stale_criteria: <criteria of old file to be deleted, unit is day>
+backup_lifecycle: # <criteria of old file to be deleted, unit is day>
